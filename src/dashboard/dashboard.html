@@ -1,0 +1,62 @@
+<div class="p-6">
+  <h2 class="text-2xl font-semibold text-cyan-300 mb-4">Dashboard</h2>
+
+  <div *ngIf="loading" class="text-gray-400">Loading...</div>
+  <div *ngIf="error" class="p-3 bg-red-900 text-red-200 rounded">{{ error }}</div>
+
+  <div *ngIf="dashboard" class="space-y-6">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div class="bg-gray-900 p-4 rounded shadow">
+        <div class="text-sm text-gray-400">WAN</div>
+        <div class="mt-2 text-lg font-semibold text-white">{{ dashboard.primaryInfo?.address || '—' }}</div>
+        <div class="text-xs text-gray-400 mt-1">Interface: {{ dashboard.primaryInterface || '—' }}</div>
+      </div>
+
+      <div class="bg-gray-900 p-4 rounded shadow">
+        <div class="text-sm text-gray-400">LAN</div>
+        <div class="mt-2 text-lg font-semibold text-white">
+          {{ dashboard.interfaces?.length ? (dashboard.interfaces[0].address || '—') : '—' }}
+        </div>
+        <div class="text-xs text-gray-400 mt-1">Interfaces: {{ dashboard.interfaces?.length || 0 }}</div>
+      </div>
+
+      <div class="bg-gray-900 p-4 rounded shadow">
+        <div class="text-sm text-gray-400">Devices</div>
+        <div class="mt-2 text-lg font-semibold text-white">{{ dashboard.deviceCount }}</div>
+        <div class="text-xs text-gray-400 mt-1">DHCP / ARP clients</div>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div class="bg-gray-900 p-4 rounded shadow">
+        <div class="text-sm text-gray-400">System Uptime</div>
+        <div class="mt-2 text-lg font-semibold text-white">{{ dashboard.system?.uptime }}</div>
+        <div class="text-xs text-gray-400 mt-1">Load (1m/5m/15m): {{ dashboard.system?.loadAvg[0] | number:'1.2-2' }} / {{ dashboard.system?.loadAvg[1] | number:'1.2-2' }} / {{ dashboard.system?.loadAvg[2] | number:'1.2-2' }}</div>
+      </div>
+
+      <div class="bg-gray-900 p-4 rounded shadow">
+        <div class="text-sm text-gray-400">CPU</div>
+        <div class="mt-2 text-lg font-semibold text-white">{{ dashboard.system?.cpuCount }} cores</div>
+        <div class="text-xs text-gray-400 mt-1">{{ dashboard.system?.cpuModel }}</div>
+      </div>
+
+      <div class="bg-gray-900 p-4 rounded shadow">
+        <div class="text-sm text-gray-400">Memory</div>
+        <div class="mt-2 text-lg font-semibold text-white">{{ dashboard.system?.memPercent }}%</div>
+        <div class="text-xs text-gray-400 mt-1">{{ humanBytes(dashboard.system?.memUsed) }} used / {{ humanBytes(dashboard.system?.memTotal) }}</div>
+      </div>
+    </div>
+
+    <div class="bg-gray-900 p-4 rounded shadow">
+      <div class="flex items-center justify-between">
+        <div>
+          <div class="text-sm text-gray-400">Alerts</div>
+          <div class="mt-2 text-2xl font-semibold text-yellow-300">{{ dashboard.alertsCount }}</div>
+        </div>
+        <div>
+          <button class="px-4 py-2 bg-cyan-600 rounded">View Alerts</button>
+        </div>
+      </div>
+    </div>
+  </div> 
+</div>

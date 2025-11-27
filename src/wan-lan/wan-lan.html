@@ -1,0 +1,120 @@
+<div class="max-w-4xl mx-auto space-y-10">
+
+  <!-- WAN Section -->
+  <div class="bg-gray-900 border border-gray-800 rounded-xl p-6 shadow-xl">
+    <h2 class="text-xl font-semibold text-cyan-300 mb-6">WAN Configuration</h2>
+
+    <form (ngSubmit)="applyWAN()" [formGroup]="wanForm" class="space-y-5">
+
+      <!-- Connection Type -->
+      <div class="flex items-center gap-4">
+        <label class="w-40 text-gray-300">Connection Type</label>
+        <select formControlName="connectionType" class="flex-1 p-3 rounded bg-gray-800 text-gray-100">
+          <option value="dhcp">DHCP</option>
+          <option value="static">Static IP</option>
+        </select>
+      </div>
+
+      <!-- Static IP Fields -->
+      <div *ngIf="wanForm.value.connectionType === 'static'" class="space-y-4">
+
+        <div class="flex items-center gap-4">
+          <label class="w-40 text-gray-300">Static IP</label>
+          <input formControlName="staticIp" placeholder="203.0.113.10"
+                 class="flex-1 p-3 rounded bg-gray-800 text-gray-100"/>
+        </div>
+
+        <div class="flex items-center gap-4">
+          <label class="w-40 text-gray-300">Gateway</label>
+          <input formControlName="gateway" placeholder="203.0.113.1"
+                 class="flex-1 p-3 rounded bg-gray-800 text-gray-100"/>
+        </div>
+
+        <div class="flex items-center gap-4">
+          <label class="w-40 text-gray-300">DNS Servers</label>
+          <input formControlName="dns" placeholder="8.8.8.8, 1.1.1.1"
+                 class="flex-1 p-3 rounded bg-gray-800 text-gray-100"/>
+        </div>
+
+      </div>
+
+      <button type="submit"
+              class="px-6 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg text-white"
+              [disabled]="loading">
+        Apply WAN Settings
+      </button>
+    </form>
+  </div>
+
+  <!-- LAN Section -->
+  <div class="bg-gray-900 border border-gray-800 rounded-xl p-6 shadow-xl">
+    <h2 class="text-xl font-semibold text-cyan-300 mb-6">LAN Configuration</h2>
+
+    <form (ngSubmit)="applyLAN()" [formGroup]="lanForm" class="space-y-5">
+
+      <div class="flex items-center gap-4">
+        <label class="w-40 text-gray-300">LAN IP</label>
+        <input formControlName="lanIp" placeholder="192.168.50.1"
+               class="flex-1 p-3 rounded bg-gray-800 text-gray-100"/>
+      </div>
+
+      <div class="flex items-center gap-4">
+        <label class="w-40 text-gray-300">Subnet Mask</label>
+        <input formControlName="subnet" placeholder="255.255.255.0"
+               class="flex-1 p-3 rounded bg-gray-800 text-gray-100"/>
+      </div>
+
+      <div class="flex items-center gap-4">
+        <label class="w-40 text-gray-300">DHCP Enabled</label>
+        <select formControlName="dhcpEnabled"
+                class="p-3 rounded bg-gray-800 text-gray-100">
+          <option [value]="true">Yes</option>
+          <option [value]="false">No</option>
+        </select>
+      </div>
+
+      <div *ngIf="lanForm.value.dhcpEnabled" class="space-y-4">
+        <div class="flex items-center gap-4">
+          <label class="w-40 text-gray-300">DHCP Start</label>
+          <input formControlName="dhcpStart" placeholder="192.168.50.100"
+                 class="flex-1 p-3 rounded bg-gray-800 text-gray-100"/>
+        </div>
+
+        <div class="flex items-center gap-4">
+          <label class="w-40 text-gray-300">DHCP End</label>
+          <input formControlName="dhcpEnd" placeholder="192.168.50.200"
+                 class="flex-1 p-3 rounded bg-gray-800 text-gray-100"/>
+        </div>
+      </div>
+
+      <button type="submit"
+              class="px-6 py-2 bg-green-600 hover:bg-green-700 rounded-lg text-white"
+              [disabled]="loading">
+        Apply LAN Settings
+      </button>
+    </form>
+
+    <!-- Success / Error Messages -->
+    <div *ngIf="message" class="mt-4 p-3 bg-green-900 text-green-200 rounded">
+      {{ message }}
+    </div>
+
+    <div *ngIf="error" class="mt-4 p-3 bg-red-900 text-red-200 rounded">
+      {{ error }}
+    </div>
+
+    <!-- Redirect Notice -->
+    <div *ngIf="newLanIp"
+         class="mt-4 p-3 bg-yellow-900 text-yellow-200 rounded">
+      LAN IP changed to:
+      <strong>{{ newLanIp }}</strong>.
+      Redirecting in {{ redirectCountdown }} seconds...
+      <br/>
+      If not redirected, click:
+      <a [href]="'http://' + newLanIp" class="underline text-cyan-300">
+        http://{{ newLanIp }}
+      </a>
+    </div>
+
+  </div>
+</div>

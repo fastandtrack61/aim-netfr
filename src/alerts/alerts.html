@@ -1,0 +1,36 @@
+<div class="p-6">
+  <h2 class="text-2xl font-semibold text-yellow-300 mb-4">Security Alerts</h2>
+
+  <button class="px-4 py-2 bg-red-700 text-white rounded mb-4" (click)="clear()">Clear Alerts</button>
+
+  <div *ngIf="loading" class="text-gray-400">Loading alerts…</div>
+
+  <div *ngIf="!loading && alerts.length === 0" class="text-gray-400">
+    No alerts detected.
+  </div>
+
+  <div *ngIf="alerts.length">
+    <table class="min-w-full bg-gray-900 text-gray-200 rounded shadow">
+      <thead class="bg-gray-800">
+        <tr>
+          <th class="p-2">Timestamp</th>
+          <th class="p-2">Type</th>
+          <th class="p-2">Source IP</th>
+          <th class="p-2">Destination IP</th>
+          <th class="p-2">Severity</th>
+          <th class="p-2">Message</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let a of alerts" class="border-t border-gray-800">
+          <td class="p-2">{{ a.timestamp }}</td>
+          <td class="p-2">{{ a.type }}</td>
+          <td class="p-2">{{ a.srcIp || '-' }}</td>
+          <td class="p-2">{{ a.dstIp || '-' }}</td>
+          <td class="p-2">{{ a.severity }}</td>
+          <td class="p-2">{{ a.message }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
